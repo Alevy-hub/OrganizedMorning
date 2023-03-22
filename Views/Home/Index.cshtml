@@ -1,0 +1,23 @@
+﻿@model List<IndexModel>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="d-flex align-items-center justify-content-center align-content-center text-center flex-column" style="margin-top:1%">
+    <a asp-action="Create" class="btn btn-lg" style="background-color:#272640; color: #006466"><b>Utwórz nowy plan</b></a>
+</div>
+
+
+<div class="row justify-content-center">
+    @foreach (var item in Model)
+    {   
+        <div class="card m-3 time-card" style="width: 50%;">
+            <div class="card-body">
+                <h5 class="card-title text-center time-card-title">@item.Title</h5>
+                <h6 class="card-subtitle mb-2 text-muted text-center time-card-calculationTime">@item.BaseTime</h6>
+                <a asp-controller="Morning" asp-action="Details" asp-route-encodedName="@item.Title" class="stretched-link"></a>
+            </div>
+        </div>
+        
+    }
+</div>
