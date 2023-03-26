@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace OrganizedMorning.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class edit : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -18,7 +18,7 @@ namespace OrganizedMorning.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    BaseTime = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BaseTime = table.Column<TimeSpan>(type: "time", nullable: true),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
@@ -32,9 +32,10 @@ namespace OrganizedMorning.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Time = table.Column<int>(type: "int", nullable: false),
-                    Order = table.Column<int>(type: "int", nullable: false),
-                    MorningPlanId = table.Column<int>(type: "int", nullable: false)
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Time = table.Column<TimeSpan>(type: "time", nullable: true),
+                    Order = table.Column<int>(type: "int", nullable: true),
+                    MorningPlanId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -43,8 +44,7 @@ namespace OrganizedMorning.Migrations
                         name: "FK_Times_MorningPlans_MorningPlanId",
                         column: x => x.MorningPlanId,
                         principalTable: "MorningPlans",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(

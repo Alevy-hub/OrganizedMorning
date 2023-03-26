@@ -12,8 +12,8 @@ using OrganizedMorning.OrganizedMorning;
 namespace OrganizedMorning.Migrations
 {
     [DbContext(typeof(OrganizedMorningDbContext))]
-    [Migration("20230322204632_Init")]
-    partial class Init
+    [Migration("20230326210600_encodedtitle")]
+    partial class encodedtitle
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,11 +33,14 @@ namespace OrganizedMorning.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("BaseTime")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<TimeSpan?>("BaseTime")
+                        .HasColumnType("time");
 
                     b.Property<DateTime?>("Created")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("EncodedTitle")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
@@ -55,14 +58,20 @@ namespace OrganizedMorning.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("MorningPlanId")
+                    b.Property<string>("EncodedTitle")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("MorningPlanId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Order")
+                    b.Property<int?>("Order")
                         .HasColumnType("int");
 
-                    b.Property<int>("Time")
-                        .HasColumnType("int");
+                    b.Property<TimeSpan?>("Time")
+                        .HasColumnType("time");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -75,9 +84,7 @@ namespace OrganizedMorning.Migrations
                 {
                     b.HasOne("OrganizedMorning.Entities.MorningPlan", "MorningPlan")
                         .WithMany()
-                        .HasForeignKey("MorningPlanId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("MorningPlanId");
 
                     b.Navigation("MorningPlan");
                 });

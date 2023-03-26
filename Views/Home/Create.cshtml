@@ -1,1 +1,45 @@
-﻿
+﻿<div class="row form-group mb-3 d-flex align-items-center justify-content-center align-content-center text-center flex-column">
+	<div class="col-md-4">
+		<form action="/Home/Create" method="post">
+			<div class="form-group mb-3 d-flex align-items-center justify-content-center align-content-center text-center flex-column">
+				<label class="control-label control-label-text" for="Title"><b>Nazwa</b></label>
+				<input class="form-control form-text-input" type="text" id="Title" name="Title" />
+			</div>
+
+			<div class="form-group mb-3 d-flex align-items-center justify-content-center align-content-center text-center flex-column">
+				<label class="control-label control-label-text" for="Title"><b>Godzina bazowa</b></label>
+				<input class="form-control form-text-input" type="time" id="BaseTime" name="BaseTime" />
+			</div>
+
+			<label class="control-label control-label-text" for="Title"><b>Nazwa etapu</b></label>
+			<input class="form-control form-text-input" type="text" id="stages_0_StageTitle" name="stages[0].StageTitle" />
+			<label class="control-label control-label-text" for="Title"><b>Czas etapu</b></label>
+			<input class="form-control form-text-input" type="time" id="stages_0_StageTime" name="stages[0].StageTime" />
+			<div id="stages"></div>
+
+			<div class="form-group mb-3 mt-3">
+			<button type="button" class="btn btn-primary" id="addStageButton">Dodaj kolejny etap</button>
+			</div>
+
+				<input type="submit" value="Utwórz" class="btn btn-primary" />
+				<a href="./Index" class="btn btn-primary">Anuluj</a>
+		</form>
+	</div>
+</div>
+@section scripts{
+	<script>
+		var stageIndex = 1;
+		document.getElementById("addStageButton").addEventListener("click", function () {
+			var newContent = `
+			<div class="form-group mb-3 d-flex align-items-center justify-content-center align-content-center text-center flex-column">
+			  <label class="control-label control-label-text" for="Title"><b>Nazwa etapu</b></label>
+			  <input class="form-control form-text-input" type="text" id="stages_${stageIndex}__StageTitle" name="stages[${stageIndex}].StageTitle" />
+			  <label class="control-label control-label-text" for="Title"><b>Czas etapu</b></label>
+			  <input class="form-control form-text-input" type="time" id="stages_${stageIndex}__StageTime" name="stages[${stageIndex}].StageTime" />
+			</div>
+				`;
+			document.getElementById("stages").innerHTML += newContent;
+			stageIndex++;
+		});
+	</script>
+}

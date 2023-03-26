@@ -1,10 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using OrganizedMorning.Entities;
+using OrganizedMorning.Migrations;
 using OrganizedMorning.Models;
+using OrganizedMorning.OrganizedMorning;
 using System.Diagnostics;
 
 namespace OrganizedMorning.Controllers
 {
-    public class HomeController : Controller
+	public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
 
@@ -15,19 +19,20 @@ namespace OrganizedMorning.Controllers
 
         public IActionResult Index()
         {
-            var model = new List<IndexModel>()
+            var MorningPlans = new List<MorningPlan>();
+            var model = new List<IndexModel>();
+            var context = new OrganizedMorningDbContext();
+            MorningPlans = context.MorningPlans.ToList();
+
+            foreach(MorningPlan morningPlan in MorningPlans)
             {
-                new IndexModel()
-                {
-                    Title = "Uczelnia",
-                    BaseTime = "08:30"
-                },
-                new IndexModel()
-                {
-                    Title = "Praca",
-                    BaseTime = "09:30"
-                }
-            };
+                IndexModel indexModel = new IndexModel();
+                indexModel.Title = morningPlan.Title;
+                indexModel.BaseTime = morningPlan.BaseTime;
+                indexModel.EncodedTitle = morningPlan.EncodedTitle;
+
+                model.Add(indexModel);
+            }
 
             return View(model);
         }
@@ -36,6 +41,37 @@ namespace OrganizedMorning.Controllers
         {
             return View();
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(string title, TimeSpan BaseTime, List<Stages> stages)
+        {
+            using (var context = new OrganizedMorningDbContext())
+            {
+                int order = 0;
+                MorningPlan morningPlan = new MorningPlan();
+                morningPlan.Title = title;
+                morningPlan.BaseTime = BaseTime;
+                morningPlan.EncodeTitle();
+
+                context.MorningPlans.Add(morningPlan);
+                foreach (Stages stage in stages)
+                {
+                    Times times = new Times();
+                    times.Title = stage.StageTitle;
+                    times.Time = stage.StageTime;
+                    times.Order = order;
+                    times.EncodeTitle();
+                    times.MorningPlan = morningPlan;
+
+                    context.Times.Add(times);
+
+                    order++;
+                }
+                await context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+        }
+
 
         public IActionResult Privacy()
         {
