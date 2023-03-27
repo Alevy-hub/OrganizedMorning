@@ -72,8 +72,18 @@ namespace OrganizedMorning.Controllers
             }
         }
 
+		[Route("{encodedName}/Details")]
+		public async Task<IActionResult> Details(string encodedTitle)
+		{
+			using (var context = new OrganizedMorningDbContext())
+            {
+				MorningPlan morningPlan = context.MorningPlans.FirstOrDefault(x => x.EncodedTitle == encodedTitle);
+				return View(morningPlan);
+            }
+		}
 
-        public IActionResult Privacy()
+
+		public IActionResult Privacy()
         {
             return View();
         }
