@@ -10,11 +10,12 @@
 
 <div class="row justify-content-center">
     @foreach (var item in Model)
-    {   
+    {
+        TimeSpan baseTime = (TimeSpan)item.BaseTime;
         <div class="card m-3 time-card" style="width: 50%;">
             <div class="card-body">
-                <h5 class="card-title text-center time-card-title">@item.Title</h5>
-                <h6 class="card-subtitle mb-2 text-muted text-center time-card-calculationTime">@item.BaseTime</h6>
+                <h1 class="card-title text-center time-card-title">@item.Title</h1>
+                <h3 class="card-subtitle mb-2 text-muted text-center time-card-calculationTime">@baseTime.ToString(@"hh\:mm")</h3>
                 <a asp-controller="Home" asp-action="Details" asp-route-encodedTitle="@item.EncodedTitle" class="stretched-link"></a>
             </div>
         </div>

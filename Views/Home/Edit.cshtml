@@ -1,28 +1,37 @@
-﻿<div class="row form-group mb-3 d-flex align-items-center justify-content-center align-content-center text-center flex-column">
+﻿@model MorningModel
+@{
+	var stageIndex = 1;
+}
+
+
+<div class="row form-group mb-3 d-flex align-items-center justify-content-center align-content-center text-center flex-column">
 	<div class="col-md-4">
 		<form action="/Home/Create" method="post">
 			<div class="form-group mb-3 d-flex align-items-center justify-content-center align-content-center text-center flex-column">
 				<label class="control-label control-label-text" for="Title"><b>Nazwa</b></label>
-				<input class="form-control form-text-input" type="text" id="Title" name="Title" />
+				<input class="form-control form-text-input" type="text" id="Title" name="Title" value="@Model.MorningPlanTitle" />
 			</div>
 
 			<div class="form-group mb-3 d-flex align-items-center justify-content-center align-content-center text-center flex-column">
 				<label class="control-label control-label-text" for="Title"><b>Godzina bazowa</b></label>
-				<input class="form-control form-text-input" type="time" id="BaseTime" name="BaseTime" />
+				<input class="form-control form-text-input" type="time" id="BaseTime" name="BaseTime" value="@Model.MorningPlanBaseTime"/>
 			</div>
 
-			<label class="control-label control-label-text" for="Title"><b>Nazwa etapu</b></label>
-			<input class="form-control form-text-input" type="text" id="stages_0_StageTitle" name="stages[0].StageTitle" />
-			<label class="control-label control-label-text" for="Title"><b>Czas etapu</b></label>
-			<input class="form-control form-text-input" type="time" id="stages_0_StageTime" name="stages[0].StageTime"/>
+			@foreach(OrganizedMorning.Entities.Times stage in Model.MorningStages)
+			{
+				<label class="control-label control-label-text" for="Title"><b>Nazwa etapu</b></label>
+				<input class="form-control form-text-input" type="text" id="stages_[@stageIndex]_StageTitle" name="stages[@stageIndex].StageTitle" value="@stage.Title" />
+				<label class="control-label control-label-text" for="Title"><b>Czas etapu</b></label>
+				<input class="form-control form-text-input" type="time" id="stages_[@stageIndex]_StageTime" name="stages[@stageIndex].StageTime" value="@stage.Time"/>				
+			}
 			<div id="stages"></div>
 
 			<div class="form-group mb-3 mt-3">
-			<button type="button" class="btn btn-primary" id="addStageButton">Dodaj kolejny etap</button>
+				<button type="button" class="btn btn-primary" id="addStageButton">Dodaj kolejny etap</button>
 			</div>
 
-				<input type="submit" value="Utwórz" class="btn btn-primary" />
-				<a href="./Index" class="btn btn-primary">Anuluj</a>
+			<input type="submit" value="Zapisz" class="btn btn-primary" />			
+			<a asp-controller="Home" asp-action="Details" asp-route-encodedTitle="@Model.MorningPlanEncodedTitle" class="btn btn-primary">Anuluj</a>
 		</form>
 	</div>
 </div>

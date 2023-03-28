@@ -5,6 +5,7 @@ using OrganizedMorning.Migrations;
 using OrganizedMorning.Models;
 using OrganizedMorning.OrganizedMorning;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace OrganizedMorning.Controllers
 {
@@ -78,9 +79,39 @@ namespace OrganizedMorning.Controllers
 			using (var context = new OrganizedMorningDbContext())
             {
 				MorningPlan morningPlan = context.MorningPlans.FirstOrDefault(x => x.EncodedTitle == encodedTitle);
-				return View(morningPlan);
+                var stages = context.Times.Where(x => x.MorningPlan.Id == morningPlan.Id).ToList();
+                MorningModel morningModel = new MorningModel();
+                morningModel.MorningPlanId = morningPlan.Id;
+                morningModel.MorningPlanTitle = morningPlan.Title;
+                morningModel.MorningPlanBaseTime = morningPlan.BaseTime;
+                morningModel.MorningPlanEncodedTitle = morningPlan.EncodedTitle;
+                morningModel.MorningStages = stages;
+
+                
+
+				return View(morningModel);
             }
 		}
+
+        [Route("{encodedName}/Edit")]
+        public async Task<IActionResult> Edit(string encodedTitle)
+        {
+            using (var context = new OrganizedMorningDbContext())
+            {
+                MorningPlan morningPlan = context.MorningPlans.FirstOrDefault(x => x.EncodedTitle == encodedTitle);
+                var stages = context.Times.Where(x => x.MorningPlan.Id == morningPlan.Id).ToList();
+                MorningModel morningModel = new MorningModel();
+                morningModel.MorningPlanId = morningPlan.Id;
+                morningModel.MorningPlanTitle = morningPlan.Title;
+                morningModel.MorningPlanBaseTime = morningPlan.BaseTime;
+                morningModel.MorningPlanEncodedTitle = morningPlan.EncodedTitle;
+                morningModel.MorningStages = stages;
+
+
+
+                return View(morningModel);
+            }
+        }
 
 
 		public IActionResult Privacy()

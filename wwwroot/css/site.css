@@ -33,9 +33,15 @@ body {
     background-color: #1B3A4B;
 }
 
+@media only screen and (max-width: 600px) {
+    .time-card-title {
+        font-size: 6vw;
+    }
+}
+
 .time-card-title {
     color: #006466;
-    font-size: 32px;
+
 }
 
 .time-card-calculationTime {

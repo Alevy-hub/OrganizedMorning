@@ -1,48 +1,33 @@
-﻿@model OrganizedMorning.Entities.MorningPlan
+﻿@model MorningModel
 
 @{
     ViewData["Title"] = "Details";
+    TimeSpan calculatedTime = (TimeSpan)Model.MorningPlanBaseTime;
+    TimeSpan baseTime = (TimeSpan)Model.MorningPlanBaseTime;
 }
 
-<h1>Details</h1>
-
 <div>
-    <h4>MorningPlan</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Id)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Id)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.BaseTime)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.BaseTime)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Created)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Created)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EncodedTitle)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EncodedTitle)
-        </dd>
-    </dl>
+    <div class="row justify-content-center">
+        <div class="card m-3 time-card" style="width: 50%;">
+            <div class="card-body">
+                <h1 class="card-title text-center time-card-title"><b>@Model.MorningPlanTitle</b></h1>
+                <h2 class="card-subtitle mb-2 text-muted text-center"><b>@baseTime.ToString(@"hh\:mm")</b></h2>
+                <div class="card-subtitle mb-2 text-muted text-center time-card-calculationTime">
+                    @foreach (OrganizedMorning.Entities.Times stage in Model.MorningStages)
+                    {
+                        calculatedTime = calculatedTime - (TimeSpan)stage.Time;
+                        <h4><b>@stage.Title</b></h4>
+                        <h4>@calculatedTime.ToString(@"hh\:mm")</h4>
+                    }
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
 </div>
 <div>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    <a asp-controller="Home" asp-action="Edit" asp-route-encodedTitle="@Model.MorningPlanEncodedTitle">Edytuj</a>
     <a asp-action="Index">Back to List</a>
 </div>
