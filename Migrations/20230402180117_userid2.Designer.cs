@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OrganizedMorning.OrganizedMorning;
 
@@ -11,9 +12,11 @@ using OrganizedMorning.OrganizedMorning;
 namespace OrganizedMorning.Migrations
 {
     [DbContext(typeof(OrganizedMorningDbContext))]
-    partial class OrganizedMorningDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230402180117_userid2")]
+    partial class userid2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

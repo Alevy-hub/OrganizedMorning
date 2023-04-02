@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OrganizedMorning.Entities;
 using OrganizedMorning.Migrations;
@@ -12,18 +15,25 @@ namespace OrganizedMorning.Controllers
 	public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, UserManager<IdentityUser> userManager)
         {
             _logger = logger;
+            _userManager = userManager;
         }
 
-        public IActionResult Index()
+        [Authorize]
+        public async Task<IActionResult> Index()
         {
             var MorningPlans = new List<MorningPlan>();
             var model = new List<IndexModel>();
             var context = new OrganizedMorningDbContext();
-            MorningPlans = context.MorningPlans.ToList();
+
+			var user = await _userManager.GetUserAsync(HttpContext.User);
+            var userId = user.Id;
+
+			MorningPlans = context.MorningPlans.Where(mp => mp.UserId == userId).ToList();
 
             foreach(MorningPlan morningPlan in MorningPlans)
             {
@@ -52,6 +62,8 @@ namespace OrganizedMorning.Controllers
                 MorningPlan morningPlan = new MorningPlan();
                 morningPlan.Title = title;
                 morningPlan.BaseTime = BaseTime;
+                var user =  await _userManager.GetUserAsync(HttpContext.User);
+                morningPlan.UserId = user.Id;
                 morningPlan.EncodeTitle();
 
                 context.MorningPlans.Add(morningPlan);
@@ -68,6 +80,23 @@ namespace OrganizedMorning.Controllers
 
                     order++;
                 }
+                await context.SaveChangesAsync();
+				return RedirectToAction(nameof(Index));
+
+
+			}
+		}
+
+        
+        public async Task<IActionResult> Delete([FromRoute] int id)
+        {
+            using (var context = new OrganizedMorningDbContext())
+            {
+                var morningPlan = await context.MorningPlans.FindAsync(id);
+                var timesToRemove = await context.Times.Where(t => t.MorningPlan.Id == id).ToListAsync();
+                context.Times.RemoveRange(timesToRemove);
+                context.MorningPlans.Remove(morningPlan);
+
                 await context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -106,8 +135,6 @@ namespace OrganizedMorning.Controllers
                 morningModel.MorningPlanBaseTime = morningPlan.BaseTime;
                 morningModel.MorningPlanEncodedTitle = morningPlan.EncodedTitle;
                 morningModel.MorningStages = stages;
-
-
 
                 return View(morningModel);
             }

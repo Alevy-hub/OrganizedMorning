@@ -4,6 +4,7 @@
     ViewData["Title"] = "Details";
     TimeSpan calculatedTime = (TimeSpan)Model.MorningPlanBaseTime;
     TimeSpan baseTime = (TimeSpan)Model.MorningPlanBaseTime;
+    TimeSpan stageTime;
 }
 
 <div>
@@ -16,7 +17,8 @@
                     @foreach (OrganizedMorning.Entities.Times stage in Model.MorningStages)
                     {
                         calculatedTime = calculatedTime - (TimeSpan)stage.Time;
-                        <h4><b>@stage.Title</b></h4>
+                        stageTime = (TimeSpan)stage.Time;
+                        <h4><b>@stage.Title</b> (@stageTime.ToString(@"hh\:mm"))</h4>
                         <h4>@calculatedTime.ToString(@"hh\:mm")</h4>
                     }
                 </div>
@@ -27,7 +29,8 @@
 
 
 </div>
-<div>
-    <a asp-controller="Home" asp-action="Edit" asp-route-encodedTitle="@Model.MorningPlanEncodedTitle">Edytuj</a>
-    <a asp-action="Index">Back to List</a>
+<div class="d-flex align-items-center justify-content-center align-content-center text-center">
+    <!--<a asp-controller="Home" asp-action="Edit" asp-route-encodedTitle="@Model.MorningPlanEncodedTitle" class="btn btn-lg btn-top m-1">Edytuj</a>-->
+    <a asp-controller="Home" asp-action="Delete" asp-route-id="@Model.MorningPlanId" class="btn btn-lg btn-top m-1">Usuń</a>
+    <a asp-action="Index" class="btn btn-lg btn-top m-1">Wróć</a>
 </div>

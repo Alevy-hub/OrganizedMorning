@@ -64,3 +64,24 @@ body {
 .control-label-text{
     font-size: 20px;
 }
+
+.top-hello {
+    font-size: 24px;
+    color: #272640;
+}
+
+    .top-hello:hover {
+        color: #1B3A4B;
+    }
+
+.btn-top {
+    background-color: #272640;
+    color: #006466;
+    text-decoration: none;
+}
+
+    .btn-top:hover {
+        color: #006466;
+    }
+
+
