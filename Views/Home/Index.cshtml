@@ -16,7 +16,7 @@
             <div class="card-body">
                 <h1 class="card-title text-center time-card-title">@item.Title</h1>
                 <h3 class="card-subtitle mb-2 text-muted text-center time-card-calculationTime">@baseTime.ToString(@"hh\:mm")</h3>
-                <a asp-controller="Home" asp-action="Details" asp-route-encodedTitle="@item.EncodedTitle" class="stretched-link"></a>
+                <a asp-controller="Home" asp-action="Details" asp-route-id="@item.Id" class="stretched-link"></a>
             </div>
         </div>
         

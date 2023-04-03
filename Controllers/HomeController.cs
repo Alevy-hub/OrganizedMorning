@@ -12,7 +12,8 @@ using System.Runtime.CompilerServices;
 
 namespace OrganizedMorning.Controllers
 {
-	public class HomeController : Controller
+    [Authorize]
+    public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
         private readonly UserManager<IdentityUser> _userManager;
@@ -23,7 +24,7 @@ namespace OrganizedMorning.Controllers
             _userManager = userManager;
         }
 
-        [Authorize]
+        
         public async Task<IActionResult> Index()
         {
             var MorningPlans = new List<MorningPlan>();
@@ -33,11 +34,14 @@ namespace OrganizedMorning.Controllers
 			var user = await _userManager.GetUserAsync(HttpContext.User);
             var userId = user.Id;
 
-			MorningPlans = context.MorningPlans.Where(mp => mp.UserId == userId).ToList();
+			MorningPlans = context.MorningPlans.Where(mp => mp.UserId == userId)
+                .OrderByDescending(mp => mp.Created)
+                .ToList();
 
             foreach(MorningPlan morningPlan in MorningPlans)
             {
                 IndexModel indexModel = new IndexModel();
+                indexModel.Id = morningPlan.Id;
                 indexModel.Title = morningPlan.Title;
                 indexModel.BaseTime = morningPlan.BaseTime;
                 indexModel.EncodedTitle = morningPlan.EncodedTitle;
@@ -46,6 +50,11 @@ namespace OrganizedMorning.Controllers
             }
 
             return View(model);
+        }
+
+        public IActionResult NotAuthorized()
+        {
+            return View();
         }
 
         public IActionResult Create()
@@ -102,13 +111,47 @@ namespace OrganizedMorning.Controllers
             }
         }
 
-		[Route("{encodedName}/Details")]
-		public async Task<IActionResult> Details(string encodedTitle)
-		{
-			using (var context = new OrganizedMorningDbContext())
+		//[Route("{encodedName}/Details")]
+		//public async Task<IActionResult> Details(string encodedTitle)
+		//{
+		//	using (var context = new OrganizedMorningDbContext())
+  //          {
+		//		MorningPlan morningPlan = context.MorningPlans.FirstOrDefault(x => x.EncodedTitle == encodedTitle);
+  //              var stages = context.Times.Where(x => x.MorningPlan.Id == morningPlan.Id).ToList();
+  //              MorningModel morningModel = new MorningModel();
+  //              morningModel.MorningPlanId = morningPlan.Id;
+  //              morningModel.MorningPlanTitle = morningPlan.Title;
+  //              morningModel.MorningPlanBaseTime = morningPlan.BaseTime;
+  //              morningModel.MorningPlanEncodedTitle = morningPlan.EncodedTitle;
+  //              morningModel.MorningStages = stages;
+
+  //              var user = await _userManager.GetUserAsync(HttpContext.User);
+  //              var userId = user.Id;
+  //              if(userId == morningPlan.UserId)
+  //              {
+  //                  return View(morningModel);
+  //              }
+  //              else
+  //              {
+  //                  return Redirect(nameof(NotAuthorized));
+  //              }
+  //          }
+		//}
+
+        [Route("{id}/Details")]
+        public async Task<IActionResult> Details(int id)
+        {
+            using (var context = new OrganizedMorningDbContext())
             {
-				MorningPlan morningPlan = context.MorningPlans.FirstOrDefault(x => x.EncodedTitle == encodedTitle);
-                var stages = context.Times.Where(x => x.MorningPlan.Id == morningPlan.Id).ToList();
+                MorningPlan morningPlan = context.MorningPlans.FirstOrDefault(x => x.Id == id);
+                //var stages = context.Times.Where(x => x.MorningPlan.Id == morningPlan.Id).ToList();
+
+                var stages = new List<Times>();
+                if (morningPlan != null)
+                {
+                    stages = context.Times.Where(x => x.MorningPlan.Id == morningPlan.Id).ToList();
+                }
+
                 MorningModel morningModel = new MorningModel();
                 morningModel.MorningPlanId = morningPlan.Id;
                 morningModel.MorningPlanTitle = morningPlan.Title;
@@ -116,13 +159,20 @@ namespace OrganizedMorning.Controllers
                 morningModel.MorningPlanEncodedTitle = morningPlan.EncodedTitle;
                 morningModel.MorningStages = stages;
 
-                
-
-				return View(morningModel);
+                var user = await _userManager.GetUserAsync(HttpContext.User);
+                var userId = user.Id;
+                if (userId == morningPlan.UserId)
+                {
+                    return View(morningModel);
+                }
+                else
+                {
+                    return Redirect(nameof(NotAuthorized));
+                }
             }
-		}
+        }
 
-        [Route("{encodedName}/Edit")]
+        [Route("{id}/Edit")]
         public async Task<IActionResult> Edit(string encodedTitle)
         {
             using (var context = new OrganizedMorningDbContext())
