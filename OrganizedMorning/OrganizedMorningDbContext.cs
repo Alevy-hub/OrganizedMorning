@@ -14,7 +14,7 @@ namespace OrganizedMorning.OrganizedMorning
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             //optionsBuilder.UseSqlServer("Server=localhost\\SQLEXPRESS;Database=OrganizedMorning;User ID=appuser;Password=user#app;Trusted_Connection=False;Encrypt=True;TrustServerCertificate=True;");
-            optionsBuilder.UseSqlServer("Server=tcp:appdatabase.database.windows.net,1433;Initial Catalog=testapp;Persist Security Info=False;User ID=appuser;Password=Aplikacja#Marzec;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+            optionsBuilder.UseNpgsql("Server=psql01.mikr.us;Port=5432;Database=db_o184;User Id=o184;Password=B58C_812fad;Integrated Security=false;");
         }
 
         //protected override void OnModelCreating(ModelBuilder builder)

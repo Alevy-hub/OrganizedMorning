@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OrganizedMorning.Entities;
-using OrganizedMorning.Migrations;
 using OrganizedMorning.Models;
 using OrganizedMorning.OrganizedMorning;
 using System.Diagnostics;
