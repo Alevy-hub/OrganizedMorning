@@ -14,7 +14,7 @@ namespace OrganizedMorning.OrganizedMorning
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             //optionsBuilder.UseSqlServer("Server=localhost\\SQLEXPRESS;Database=OrganizedMorning;User ID=appuser;Password=user#app;Trusted_Connection=False;Encrypt=True;TrustServerCertificate=True;");
-            optionsBuilder.UseNpgsql("Server=psql01.mikr.us;Port=5432;Database=db_o184;User Id=o184;Password=B58C_812fad;Integrated Security=false;");
+            optionsBuilder.UseMySQL("Server=mws02.mikr.us;Port=50005;Database=organizedmorningdb;Uid=root;Pwd=NeFezZxsUW;Charset=utf8mb4;");
         }
 
         //protected override void OnModelCreating(ModelBuilder builder)

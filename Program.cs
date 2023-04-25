@@ -10,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 //var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<OrganizedMorningDbContext>(options =>
-    options.UseNpgsql("Server = psql01.mikr.us; Port = 5432; Database = db_o184; User Id = o184; Password = B58C_812fad; Integrated Security = false; "));
+    options.UseMySQL("Server=mws02.mikr.us;Port=50005;Database=organizedmorningdb;Uid=root;Pwd=NeFezZxsUW;Charset=utf8mb4;"));
 //builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options =>

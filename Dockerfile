@@ -16,7 +16,7 @@ WORKDIR /app
 COPY --from=build-env /app/out .
 
 # Ustaw zmienn¹ œrodowiskow¹ z ³añcuchem po³¹czenia do bazy danych
-ENV ConnectionStrings__DefaultConnection "Server=psql01.mikr.us;Port=5432;Database=db_o184;User Id=o184;Password=B58C_812fad;Integrated Security=false;"
+ENV ConnectionStrings__DefaultConnection "Server=mws02.mikr.us;Port=50005;Database=organizedmorningdb;Uid=root;Pwd=NeFezZxsUW;"
 
 # Uruchom aplikacjê
 ENTRYPOINT ["dotnet", "OrganizedMorning.dll"]
