@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using OrganizedMorning.Entities;
 using OrganizedMorning.Models;
 using OrganizedMorning.OrganizedMorning;
@@ -16,19 +17,22 @@ namespace OrganizedMorning.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly UserManager<IdentityUser> _userManager;
+		private readonly DbContextOptions<OrganizedMorningDbContext> _options;
 
-        public HomeController(ILogger<HomeController> logger, UserManager<IdentityUser> userManager)
+
+		public HomeController(ILogger<HomeController> logger, UserManager<IdentityUser> userManager, DbContextOptions<OrganizedMorningDbContext> options)
         {
             _logger = logger;
             _userManager = userManager;
-        }
+			_options = options;
+		}
 
         
         public async Task<IActionResult> Index()
         {
             var MorningPlans = new List<MorningPlan>();
             var model = new List<IndexModel>();
-            var context = new OrganizedMorningDbContext();
+            var context = new OrganizedMorningDbContext(_options);
 
 			var user = await _userManager.GetUserAsync(HttpContext.User);
             var userId = user.Id;
@@ -64,7 +68,7 @@ namespace OrganizedMorning.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(string title, TimeSpan BaseTime, List<Stages> stages)
         {
-            using (var context = new OrganizedMorningDbContext())
+            using (var context = new OrganizedMorningDbContext(_options))
             {
                 int order = 0;
                 MorningPlan morningPlan = new MorningPlan();
@@ -98,7 +102,7 @@ namespace OrganizedMorning.Controllers
         
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            using (var context = new OrganizedMorningDbContext())
+            using (var context = new OrganizedMorningDbContext(_options))
             {
                 var morningPlan = await context.MorningPlans.FindAsync(id);
                 var timesToRemove = await context.Times.Where(t => t.MorningPlan.Id == id).ToListAsync();
@@ -140,7 +144,7 @@ namespace OrganizedMorning.Controllers
         [Route("{id}/Details")]
         public async Task<IActionResult> Details(int id)
         {
-            using (var context = new OrganizedMorningDbContext())
+            using (var context = new OrganizedMorningDbContext(_options))
             {
                 MorningPlan morningPlan = context.MorningPlans.FirstOrDefault(x => x.Id == id);
                 //var stages = context.Times.Where(x => x.MorningPlan.Id == morningPlan.Id).ToList();
@@ -174,7 +178,7 @@ namespace OrganizedMorning.Controllers
         [Route("{id}/Edit")]
         public async Task<IActionResult> Edit(string encodedTitle)
         {
-            using (var context = new OrganizedMorningDbContext())
+            using (var context = new OrganizedMorningDbContext(_options))
             {
                 MorningPlan morningPlan = context.MorningPlans.FirstOrDefault(x => x.EncodedTitle == encodedTitle);
                 var stages = context.Times.Where(x => x.MorningPlan.Id == morningPlan.Id).ToList();

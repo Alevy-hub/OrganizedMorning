@@ -12,8 +12,8 @@
         <div class="card m-3 time-card" style="width: 50%;">
             <div class="card-body">
                 <h1 class="card-title text-center time-card-title"><b>@Model.MorningPlanTitle</b></h1>
-                <h2 class="card-subtitle mb-2 text-muted text-center"><b>@baseTime.ToString(@"hh\:mm")</b></h2>
-                <div class="card-subtitle mb-2 text-muted text-center time-card-calculationTime">
+                <h2 class="card-subtitle mb-2 text-center time-card-baseTime"><b>@baseTime.ToString(@"hh\:mm")</b></h2>
+                <div class="card-subtitle mb-2 text-center time-card-calculationTime">
                     @foreach (OrganizedMorning.Entities.Times stage in Model.MorningStages)
                     {
                         calculatedTime = calculatedTime - (TimeSpan)stage.Time;

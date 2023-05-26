@@ -5,8 +5,8 @@
 
 
 
-<div class="d-flex align-items-center justify-content-center align-content-center text-center flex-column" style="margin-top:1%">
-    <a asp-action="Create" class="btn btn-lg" style="background-color:#272640; color: #006466"><b>Utwórz nowy plan</b></a>
+<div class="d-flex align-items-center justify-content-center align-content-center text-center flex-column mt-4" style="margin-top:1%">
+    <a asp-action="Create" class="btn btn-lg btn-create"><b>Utwórz nowy plan</b></a>
 </div>
 
 
@@ -17,7 +17,7 @@
         <div class="card m-3 time-card" style="width: 50%;">
             <div class="card-body">
                 <h1 class="card-title text-center time-card-title">@item.Title</h1>
-                <h3 class="card-subtitle mb-2 text-muted text-center time-card-calculationTime">@baseTime.ToString(@"hh\:mm")</h3>
+                <h3 class="card-subtitle mb-2 text-center time-card-calculationTime">@baseTime.ToString(@"hh\:mm")</h3>
                 <a asp-controller="Home" asp-action="Details" asp-route-id="@item.Id" class="stretched-link"></a>
             </div>
         </div>

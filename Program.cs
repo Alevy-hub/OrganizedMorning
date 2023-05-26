@@ -8,9 +8,9 @@ using OrganizedMorning.OrganizedMorning;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-//var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<OrganizedMorningDbContext>(options =>
-    options.UseMySQL("Server=mws02.mikr.us;Port=50005;Database=organizedmorningdb;Uid=root;Pwd=NeFezZxsUW;Charset=utf8mb4;"));
+    options.UseMySQL(connectionString));
 //builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options =>
