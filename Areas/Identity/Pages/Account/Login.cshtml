@@ -5,7 +5,7 @@
     ViewData["Title"] = "Zaloguj się";
 }
 
-<h1 class="d-flex align-items-center justify-content-center align-content-center text-center flex-column">@ViewData["Title"]</h1>
+<h2 class="d-flex align-items-center justify-content-center align-content-center text-center flex-column mt-5" style="color: #fdffff">@ViewData["Title"]</h2>
 <div class="row d-flex align-items-center justify-content-center align-content-center text-center flex-column">
     <div class="col-md-4">
         <section>
@@ -13,17 +13,17 @@
                 <hr />
                 <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
                 <div class="form-floating mb-3">
-                    <input asp-for="Input.UserName" class="form-control" autocomplete="username" aria-required="true" placeholder="Nazwa użytkownika" />
+                    <input asp-for="Input.UserName" class="form-control form-text-input" autocomplete="username" aria-required="true" placeholder="Nazwa użytkownika" />
                     <label asp-for="Input.UserName" class="form-label">Nazwa użytkownika</label>
                     <span asp-validation-for="Input.UserName" class="text-danger"></span>
                 </div>
                 <div class="form-floating mb-3">
-                    <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="Hasło" />
+                    <input asp-for="Input.Password" class="form-control form-text-input" autocomplete="current-password" aria-required="true" placeholder="Hasło" />
                     <label asp-for="Input.Password" class="form-label">Hasło</label>
                     <span asp-validation-for="Input.Password" class="text-danger"></span>
                 </div>
                 <div class="checkbox mb-3">
-                    <label asp-for="Input.RememberMe" class="form-label">
+                    <label asp-for="Input.RememberMe" class="form-label" style="color: #fdffff">
                         <input class="form-check-input" asp-for="Input.RememberMe" />
                         @Html.DisplayNameFor(m => m.Input.RememberMe)
                     </label>
