@@ -1,20 +1,25 @@
-﻿<div class="row form-group my-3 d-flex align-items-center justify-content-center align-content-center text-center flex-column">
+﻿@model MorningCreateModel
+
+<div class="row form-group my-3 d-flex align-items-center justify-content-center align-content-center text-center flex-column">
 	<div class="col-md-4">
 		<form action="/Home/Create" method="post">
 			<div class="form-group mb-3 d-flex align-items-center justify-content-center align-content-center text-center flex-column">
-				<label class="control-label control-label-text" for="Title"><b>Nazwa</b></label>
-				<input class="form-control form-text-input" type="text" id="Title" name="Title" />
+				<label class="control-label control-label-text" for="MorningPlanTitle"><b>Nazwa</b></label>
+				<input asp-for="MorningPlanTitle" class="form-control form-text-input" />
+				<span asp-validation-for="MorningPlanTitle" class="text-danger"></span>
 			</div>
 
+
 			<div class="form-group mb-3 d-flex align-items-center justify-content-center align-content-center text-center flex-column">
-				<label class="control-label control-label-text" for="Title"><b>Godzina bazowa</b></label>
-				<input class="form-control form-text-input" type="time" id="BaseTime" name="BaseTime" />
+				<label class="control-label control-label-text" for="MorningPlanBaseTime"><b>Godzina bazowa</b></label>
+				<input class="form-control form-text-input" type="time" asp-for="MorningPlanBaseTime" />
+				<span asp-validation-for="MorningPlanBaseTime" class="text-danger"></span>
 			</div>
 
 			<label class="control-label control-label-text" for="Title"><b>Nazwa etapu</b></label>
-			<input class="form-control form-text-input" type="text" id="stages_0_StageTitle" name="stages[0].StageTitle" />
+			<input class="form-control form-text-input" type="text" id="MorningStages_0_StageTitle" name="MorningStages[0].StageTitle" />
 			<label class="control-label control-label-text" for="Title"><b>Czas etapu</b></label>
-			<input class="form-control form-text-input" type="time" id="stages_0_StageTime" name="stages[0].StageTime"/>
+			<input class="form-control form-text-input" type="time" id="MorningStages_0_StageTime" name="MorningStages[0].StageTime" />
 			<div id="stages"></div>
 
 			<div class="form-group mb-3 mt-3">
@@ -35,25 +40,25 @@
 
 			var newLabel1 = document.createElement("label");
 			newLabel1.classList.add("control-label", "control-label-text");
-			newLabel1.setAttribute("for", `stages_${stageIndex}__StageTitle`);
+			newLabel1.setAttribute("for", `MorningStages_${stageIndex}__StageTitle`);
 			newLabel1.innerHTML = "<b>Nazwa etapu</b>";
 
 			var newInput1 = document.createElement("input");
 			newInput1.classList.add("form-control", "form-text-input");
 			newInput1.setAttribute("type", "text");
-			newInput1.setAttribute("id", `stages_${stageIndex}__StageTitle`);
-			newInput1.setAttribute("name", `stages[${stageIndex}].StageTitle`);
+			newInput1.setAttribute("id", `MorningStages_${stageIndex}__StageTitle`);
+			newInput1.setAttribute("name", `MorningStages[${stageIndex}].StageTitle`);
 
 			var newLabel2 = document.createElement("label");
 			newLabel2.classList.add("control-label", "control-label-text");
-			newLabel2.setAttribute("for", `stages_${stageIndex}__StageTime`);
+			newLabel2.setAttribute("for", `MorningStages_${stageIndex}__StageTime`);
 			newLabel2.innerHTML = "<b>Czas etapu</b>";
 
 			var newInput2 = document.createElement("input");
 			newInput2.classList.add("form-control", "form-text-input");
 			newInput2.setAttribute("type", "time");
-			newInput2.setAttribute("id", `stages_${stageIndex}__StageTime`);
-			newInput2.setAttribute("name", `stages[${stageIndex}].StageTime`);
+			newInput2.setAttribute("id", `MorningStages_${stageIndex}__StageTime`);
+			newInput2.setAttribute("name", `MorningStages[${stageIndex}].StageTime`);
 
 			newDiv.appendChild(newLabel1);
 			newDiv.appendChild(newInput1);

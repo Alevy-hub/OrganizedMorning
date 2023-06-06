@@ -66,20 +66,25 @@ namespace OrganizedMorning.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(string title, TimeSpan BaseTime, List<Stages> stages)
+        public async Task<IActionResult> Create(MorningCreateModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
             using (var context = new OrganizedMorningDbContext(_options))
             {
                 int order = 0;
                 MorningPlan morningPlan = new MorningPlan();
-                morningPlan.Title = title;
-                morningPlan.BaseTime = BaseTime;
+                morningPlan.Title = model.MorningPlanTitle;
+                morningPlan.BaseTime = model.MorningPlanBaseTime;
                 var user =  await _userManager.GetUserAsync(HttpContext.User);
                 morningPlan.UserId = user.Id;
                 morningPlan.EncodeTitle();
 
                 context.MorningPlans.Add(morningPlan);
-                foreach (Stages stage in stages)
+                foreach (Stages stage in model.MorningStages)
                 {
                     Times times = new Times();
                     times.Title = stage.StageTitle;

@@ -1,4 +1,6 @@
-﻿namespace OrganizedMorning.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace OrganizedMorning.Models
 {
     public class Stages
     {
