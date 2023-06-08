@@ -1,5 +1,6 @@
 ﻿@model MorningCreateModel
 
+
 <div class="row form-group my-3 d-flex align-items-center justify-content-center align-content-center text-center flex-column">
 	<div class="col-md-4">
 		<form action="/Home/Create" method="post">
@@ -17,10 +18,26 @@
 			</div>
 
 			<label class="control-label control-label-text" for="Title"><b>Nazwa etapu</b></label>
-			<input class="form-control form-text-input" type="text" id="MorningStages_0_StageTitle" name="MorningStages[0].StageTitle" />
+			<input class="form-control form-text-input" type="text" asp-for="MorningStages[0].StageTitle" />
+			<span asp-validation-for="MorningStages[0].StageTitle" class="text-danger"></span>
+
 			<label class="control-label control-label-text" for="Title"><b>Czas etapu</b></label>
-			<input class="form-control form-text-input" type="time" id="MorningStages_0_StageTime" name="MorningStages[0].StageTime" />
+			<input class="form-control form-text-input" type="time" value="00:00" asp-for="MorningStages[0].StageTime" />
 			<div id="stages"></div>
+
+
+			@if (Model != null)
+			{
+				@for (int i = 1; i < Model.MorningStages.Count; i++)
+				{
+					<label class="control-label control-label-text" for="Title"><b>Nazwa etapu</b></label>
+					<input class="form-control form-text-input" type="text" asp-for="MorningStages[i].StageTitle" />
+					<span asp-validation-for="MorningStages[i].StageTitle" class="text-danger"></span>
+					<label class="control-label control-label-text" for="Title"><b>Czas etapu</b></label>
+					<input class="form-control form-text-input" type="time" asp-for="MorningStages[i].StageTime" />
+					<div id="stages"></div>
+				}
+			}
 
 			<div class="form-group mb-3 mt-3">
 			<button type="button" class="btn btn-top" id="addStageButton">Dodaj kolejny etap</button>

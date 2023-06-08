@@ -70,6 +70,7 @@ namespace OrganizedMorning.Controllers
         {
             if (!ModelState.IsValid)
             {
+
                 return View(model);
             }
 

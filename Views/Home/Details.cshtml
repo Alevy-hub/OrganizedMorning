@@ -5,6 +5,7 @@
     TimeSpan calculatedTime = (TimeSpan)Model.MorningPlanBaseTime;
     TimeSpan baseTime = (TimeSpan)Model.MorningPlanBaseTime;
     TimeSpan stageTime;
+    bool isTimeZero;
 }
 
 <div>
@@ -16,8 +17,20 @@
                 <div class="card-subtitle mb-2 text-center time-card-calculationTime">
                     @foreach (OrganizedMorning.Entities.Times stage in Model.MorningStages)
                     {
-                        calculatedTime = calculatedTime - (TimeSpan)stage.Time;
-                        stageTime = (TimeSpan)stage.Time;
+                        if(calculatedTime - (TimeSpan)stage.Time <= TimeSpan.Parse("00:00"))
+                        {
+                            TimeSpan timeLeft = (TimeSpan)stage.Time - calculatedTime;
+                            calculatedTime = TimeSpan.Parse("23:59");
+                            calculatedTime -= timeLeft;
+                            calculatedTime += TimeSpan.Parse("00:01");
+                        }
+                        else
+                        {
+                            calculatedTime = calculatedTime - (TimeSpan)stage.Time;
+                        }
+                        stageTime = (TimeSpan)stage.Time;                            
+
+
                         <h4><b>@stage.Title</b> (@stageTime.ToString(@"hh\:mm"))</h4>
                         <h4>@calculatedTime.ToString(@"hh\:mm")</h4>
                     }
