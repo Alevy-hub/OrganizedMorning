@@ -1,77 +1,24 @@
 ﻿@model MorningModel
-@{
-	var stageIndex = 1;
-}
 
+@{
+	int id = Model.MorningPlanId;
+}
 
 <div class="row form-group mb-3 d-flex align-items-center justify-content-center align-content-center text-center flex-column">
 	<div class="col-md-4">
-		<form action="/Home/Create" method="post">
-			<div class="form-group mb-3 d-flex align-items-center justify-content-center align-content-center text-center flex-column">
-				<label class="control-label control-label-text" for="Title"><b>Nazwa</b></label>
-				<input class="form-control form-text-input" type="text" id="Title" name="Title" value="@Model.MorningPlanTitle" />
-			</div>
-
+		<h3 class="mt-3" style="color: white;">Zmiana godziny bazowej</h3>
+		<form action="/Home/EditDb" method="post">
 			<div class="form-group mb-3 d-flex align-items-center justify-content-center align-content-center text-center flex-column">
 				<label class="control-label control-label-text" for="Title"><b>Godzina bazowa</b></label>
 				<input class="form-control form-text-input" type="time" id="BaseTime" name="BaseTime" value="@Model.MorningPlanBaseTime"/>
 			</div>
+			<input type="hidden" name="id" id="id" value="@Model.MorningPlanId" />
 
-			@foreach(OrganizedMorning.Entities.Times stage in Model.MorningStages)
-			{
-				<label class="control-label control-label-text" for="Title"><b>Nazwa etapu</b></label>
-				<input class="form-control form-text-input" type="text" id="stages_[@stageIndex]_StageTitle" name="stages[@stageIndex].StageTitle" value="@stage.Title" />
-				<label class="control-label control-label-text" for="Title"><b>Czas etapu</b></label>
-				<input class="form-control form-text-input" type="time" id="stages_[@stageIndex]_StageTime" name="stages[@stageIndex].StageTime" value="@stage.Time"/>				
-			}
-			<div id="stages"></div>
-
-			<div class="form-group mb-3 mt-3">
-				<button type="button" class="btn btn-top" id="addStageButton">Dodaj kolejny etap</button>
-			</div>
 
 			<input type="submit" value="Zapisz" class="btn btn-top" />
-			<a asp-controller="Home" asp-action="Details" asp-route-encodedTitle="@Model.MorningPlanEncodedTitle" class="btn btn-top">Anuluj</a>
+			<a asp-controller="Home" asp-action="Details" asp-route-id="@Model.MorningPlanId" class="btn btn-top">Anuluj</a>
 		</form>
 	</div>
 </div>
-@section scripts{
-	<script>
-		var stageIndex = 1;
-		document.getElementById("addStageButton").addEventListener("click", function () {
-			var newDiv = document.createElement("div");
-			newDiv.classList.add("form-group", "mb-3", "d-flex", "align-items-center", "justify-content-center", "align-content-center", "text-center", "flex-column");
 
-			var newLabel1 = document.createElement("label");
-			newLabel1.classList.add("control-label", "control-label-text");
-			newLabel1.setAttribute("for", `stages_${stageIndex}__StageTitle`);
-			newLabel1.innerHTML = "<b>Nazwa etapu</b>";
-
-			var newInput1 = document.createElement("input");
-			newInput1.classList.add("form-control", "form-text-input");
-			newInput1.setAttribute("type", "text");
-			newInput1.setAttribute("id", `stages_${stageIndex}__StageTitle`);
-			newInput1.setAttribute("name", `stages[${stageIndex}].StageTitle`);
-
-			var newLabel2 = document.createElement("label");
-			newLabel2.classList.add("control-label", "control-label-text");
-			newLabel2.setAttribute("for", `stages_${stageIndex}__StageTime`);
-			newLabel2.innerHTML = "<b>Czas etapu</b>";
-
-			var newInput2 = document.createElement("input");
-			newInput2.classList.add("form-control", "form-text-input");
-			newInput2.setAttribute("type", "time");
-			newInput2.setAttribute("id", `stages_${stageIndex}__StageTime`);
-			newInput2.setAttribute("name", `stages[${stageIndex}].StageTime`);
-
-			newDiv.appendChild(newLabel1);
-			newDiv.appendChild(newInput1);
-			newDiv.appendChild(newLabel2);
-			newDiv.appendChild(newInput2);
-
-			document.getElementById("stages").appendChild(newDiv);
-
-			stageIndex++;
-		});
-	</script>
 }

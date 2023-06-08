@@ -182,22 +182,32 @@ namespace OrganizedMorning.Controllers
         }
 
         [Route("{id}/Edit")]
-        public async Task<IActionResult> Edit(string encodedTitle)
+        public async Task<IActionResult> Edit(int id)
         {
             using (var context = new OrganizedMorningDbContext(_options))
             {
-                MorningPlan morningPlan = context.MorningPlans.FirstOrDefault(x => x.EncodedTitle == encodedTitle);
-                var stages = context.Times.Where(x => x.MorningPlan.Id == morningPlan.Id).ToList();
+                MorningPlan morningPlan = context.MorningPlans.FirstOrDefault(x => x.Id == id);
                 MorningModel morningModel = new MorningModel();
                 morningModel.MorningPlanId = morningPlan.Id;
-                morningModel.MorningPlanTitle = morningPlan.Title;
                 morningModel.MorningPlanBaseTime = morningPlan.BaseTime;
-                morningModel.MorningPlanEncodedTitle = morningPlan.EncodedTitle;
-                morningModel.MorningStages = stages;
 
                 return View(morningModel);
             }
         }
+
+        [Route("{id}/EditDb")]
+        public async Task<IActionResult> EditDb(int id, TimeSpan baseTime)
+        {
+            using(var context  = new OrganizedMorningDbContext(_options))
+            {
+                var morningPlan = context.MorningPlans.FirstOrDefault(mp => mp.Id == id);
+                morningPlan.BaseTime = baseTime;
+                await context.SaveChangesAsync();
+            }
+
+			return RedirectToAction("Details", new { id = id });
+
+		}
 
 
 		public IActionResult Privacy()
